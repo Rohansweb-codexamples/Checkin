@@ -19,6 +19,7 @@ function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu("Staff Movement")
     .addItem("Set up / repair sheets", "setupStaffMovement")
+    .addItem("Set / change admin PIN", "setAdminPin")
     .addItem("Open web app instructions", "showDeploymentHelp")
     .addToUi();
 }
@@ -71,10 +72,11 @@ function showDeploymentHelp() {
   );
 }
 
-function doGet() {
-  return HtmlService.createHtmlOutputFromFile('index')
-    .setTitle("Staff Movement | Rohan's Staff Hub")
-    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+function doGet(e) {
+  const page = e && e.parameter ? String(e.parameter.page || '') : '';
+  const file = page === 'admin' ? 'admin' : (page === 'kiosk' ? 'kiosk' : 'index');
+  const title = page === 'admin' ? "Rohan's Hotel | Admin" : (page === 'kiosk' ? "Rohan's Hotel | Staff Kiosk" : "Staff Movement | Rohan's Staff Hub");
+  return HtmlService.createHtmlOutputFromFile(file).setTitle(title).addMetaTag('viewport', 'width=device-width, initial-scale=1');
 }
 
 function getAppData() {
@@ -255,10 +257,9 @@ function adminSaveStaff(pin, payload) {
   if (!name) throw new Error('Enter a staff name.');
   const sh = getSpreadsheet_().getSheetByName(CONFIG.SHEETS.STAFF);
   const rows = readRows_(sh);
-  const existing = rows.findIndex(r => String(r[0]).trim().toLowerCase() === name.toLowerCase());
   const values = [name, email, payload.active !== false];
-  if (existing >= 0) sh.getRange(existing + 2, 1, 1, 3).setValues([values]);
-  else sh.appendRow(values);
+  if (payload.row && Number(payload.row) >= 2 && Number(payload.row) <= sh.getLastRow()) sh.getRange(Number(payload.row), 1, 1, 3).setValues([values]);
+  else { const existing = rows.findIndex(r => String(r[0]).trim().toLowerCase() === name.toLowerCase()); if (existing >= 0) sh.getRange(existing + 2, 1, 1, 3).setValues([values]); else sh.appendRow(values); }
   return adminGetData(pin);
 }
 
@@ -269,10 +270,9 @@ function adminSaveLocation(pin, payload) {
   if (!name) throw new Error('Enter a destination.');
   const sh = getSpreadsheet_().getSheetByName(CONFIG.SHEETS.LOCATIONS);
   const rows = readRows_(sh);
-  const existing = rows.findIndex(r => String(r[0]).trim().toLowerCase() === name.toLowerCase());
   const values = [name, payload.active !== false];
-  if (existing >= 0) sh.getRange(existing + 2, 1, 1, 2).setValues([values]);
-  else sh.appendRow(values);
+  if (payload.row && Number(payload.row) >= 2 && Number(payload.row) <= sh.getLastRow()) sh.getRange(Number(payload.row), 1, 1, 2).setValues([values]);
+  else { const existing = rows.findIndex(r => String(r[0]).trim().toLowerCase() === name.toLowerCase()); if (existing >= 0) sh.getRange(existing + 2, 1, 1, 2).setValues([values]); else sh.appendRow(values); }
   return adminGetData(pin);
 }
 
