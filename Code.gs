@@ -210,3 +210,82 @@ function isActive_(value) {
 function clean_(value, max) {
   return String(value == null ? '' : value).trim().replace(/[<>]/g, '').slice(0, max);
 }
+
+
+/** Set or change the manager PIN from the bound spreadsheet's Apps Script editor. */
+function setAdminPin() {
+  const ui = SpreadsheetApp.getUi();
+  const response = ui.prompt('Set Rohan\'s Hotel admin PIN', 'Enter a new PIN (at least 6 characters). Keep it private.', ui.ButtonSet.OK_CANCEL);
+  if (response.getSelectedButton() !== ui.Button.OK) return;
+  const pin = String(response.getResponseText() || '').trim();
+  if (pin.length < 6) throw new Error('The admin PIN must be at least 6 characters.');
+  PropertiesService.getScriptProperties().setProperty('STAFF_MOVEMENT_ADMIN_PIN', pin);
+  ui.alert('Admin PIN saved. Open admin.html and use this PIN to sign in.');
+}
+
+function verifyAdmin_(pin) {
+  const saved = PropertiesService.getScriptProperties().getProperty('STAFF_MOVEMENT_ADMIN_PIN');
+  if (!saved) throw new Error('Admin PIN has not been set. Run setAdminPin() from the spreadsheet Apps Script editor.');
+  if (String(pin || '') !== saved) throw new Error('Incorrect admin PIN.');
+}
+
+function adminGetData(pin) {
+  verifyAdmin_(pin);
+  const ss = getSpreadsheet_();
+  const staff = readRows_(ss.getSheetByName(CONFIG.SHEETS.STAFF)).map((r, i) => ({
+    row: i + 2, name: String(r[0] || ''), email: String(r[1] || ''), active: isActive_(r[2])
+  }));
+  const locations = readRows_(ss.getSheetByName(CONFIG.SHEETS.LOCATIONS)).map((r, i) => ({
+    row: i + 2, name: String(r[0] || ''), active: isActive_(r[1])
+  }));
+  const log = readRows_(ss.getSheetByName(CONFIG.SHEETS.LOG)).slice(-100).reverse().map(r => ({
+    id: String(r[0] || ''), name: String(r[1] || ''), email: String(r[2] || ''),
+    action: String(r[3] || ''), destination: String(r[4] || ''), reason: String(r[5] || ''),
+    notes: String(r[6] || ''), expectedReturn: r[7] ? new Date(r[7]).toISOString() : '',
+    timeOut: r[8] ? new Date(r[8]).toISOString() : '', timeIn: r[9] ? new Date(r[9]).toISOString() : '',
+    duration: r[10] === '' ? '' : Number(r[10]), status: String(r[11] || '')
+  }));
+  return { staff, locations, log, live: getAppData() };
+}
+
+function adminSaveStaff(pin, payload) {
+  verifyAdmin_(pin);
+  payload = payload || {};
+  const name = clean_(payload.name, 120), email = clean_(payload.email, 180);
+  if (!name) throw new Error('Enter a staff name.');
+  const sh = getSpreadsheet_().getSheetByName(CONFIG.SHEETS.STAFF);
+  const rows = readRows_(sh);
+  const existing = rows.findIndex(r => String(r[0]).trim().toLowerCase() === name.toLowerCase());
+  const values = [name, email, payload.active !== false];
+  if (existing >= 0) sh.getRange(existing + 2, 1, 1, 3).setValues([values]);
+  else sh.appendRow(values);
+  return adminGetData(pin);
+}
+
+function adminSaveLocation(pin, payload) {
+  verifyAdmin_(pin);
+  payload = payload || {};
+  const name = clean_(payload.name, 120);
+  if (!name) throw new Error('Enter a destination.');
+  const sh = getSpreadsheet_().getSheetByName(CONFIG.SHEETS.LOCATIONS);
+  const rows = readRows_(sh);
+  const existing = rows.findIndex(r => String(r[0]).trim().toLowerCase() === name.toLowerCase());
+  const values = [name, payload.active !== false];
+  if (existing >= 0) sh.getRange(existing + 2, 1, 1, 2).setValues([values]);
+  else sh.appendRow(values);
+  return adminGetData(pin);
+}
+
+function adminCloseMovement(pin, recordId) {
+  verifyAdmin_(pin);
+  const sh = getSpreadsheet_().getSheetByName(CONFIG.SHEETS.LOG);
+  const values = sh.getDataRange().getValues();
+  for (let i = values.length - 1; i >= 1; i--) {
+    if (String(values[i][0]) === String(recordId) && String(values[i][11]).toLowerCase() === 'out') {
+      const now = new Date(), start = new Date(values[i][8]);
+      sh.getRange(i + 1, 10, 1, 3).setValues([[now, Math.max(0, Math.round((now - start) / 60000)), 'In']]);
+      return adminGetData(pin);
+    }
+  }
+  throw new Error('That open movement could not be found. Refresh the dashboard.');
+}
