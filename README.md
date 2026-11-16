@@ -32,3 +32,22 @@ A staff sign-out / sign-in web app. Google Sheets stores staff, destinations and
 ## Updating
 
 After changing Apps Script code, save and update the deployment (Deploy → Manage deployments → Edit → New version → Deploy).
+
+
+## Rohan's Hotel kiosk and manager dashboard
+
+The project now includes two additional pages served by the same Apps Script deployment:
+
+- **Staff kiosk:** open the deployed web app URL with `?page=kiosk`. This is the dark, front-desk screen branded for Rohan's Hotel. Staff can sign out / back in and see the live whereabouts board.
+- **Manager admin:** open the deployed web app URL with `?page=admin`. Managers can add or edit staff, activate/deactivate staff, manage selectable destinations, view recent movement history, and mark someone as returned if they forget to sign back in.
+
+### Configure the admin PIN
+
+1. In the bound spreadsheet, open **Extensions → Apps Script**.
+2. Select `setAdminPin` in the function list and click **Run**.
+3. Enter a private PIN of at least 6 characters in the prompt. To change it later, run the same function again.
+4. Give the PIN only to managers. The PIN is stored in the Apps Script project's Script Properties, not in the HTML files or spreadsheet cells.
+
+After adding these files or changing Apps Script code, save and update the existing web app deployment to a new version. The kiosk and admin pages use the same underlying spreadsheet and movement log.
+
+**Security:** the PIN gate protects the admin interface, but the standard kiosk sign-out functions are designed for staff using a shared terminal and do not verify each person's identity. Restrict the deployment to the intended organisation and do not use this as the sole emergency or safeguarding register.
