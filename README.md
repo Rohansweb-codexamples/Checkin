@@ -51,3 +51,15 @@ The project now includes two additional pages served by the same Apps Script dep
 After adding these files or changing Apps Script code, save and update the existing web app deployment to a new version. The kiosk and admin pages use the same underlying spreadsheet and movement log.
 
 **Security:** the PIN gate protects the admin interface, but the standard kiosk sign-out functions are designed for staff using a shared terminal and do not verify each person's identity. Restrict the deployment to the intended organisation and do not use this as the sole emergency or safeguarding register.
+
+
+## GitHub Pages connection
+
+The GitHub Pages `index.html` and `kiosk.html` forward visitors to the deployed Google Apps Script kiosk URL. The GitHub Pages `admin.html` forwards managers to the Apps Script admin route. This is intentional: the actual data operations use `google.script.run`, which is available in the Apps Script-hosted pages, not on a normal static GitHub Pages site. The Apps Script deployment is therefore the live application and Google Sheet backend; GitHub Pages provides the public entry URLs.
+
+Configured Apps Script deployment: https://script.google.com/macros/s/AKfycbx9Dvu2Z1Vq5HOl-x2RPsD5SkWCVvWhTZR258Qu8EijtTcY4XrnPUcMU_IcNjwx-YnL/exec
+
+- Kiosk: `https://script.google.com/macros/s/AKfycbx9Dvu2Z1Vq5HOl-x2RPsD5SkWCVvWhTZR258Qu8EijtTcY4XrnPUcMU_IcNjwx-YnL/exec?page=kiosk`
+- Admin: `https://script.google.com/macros/s/AKfycbx9Dvu2Z1Vq5HOl-x2RPsD5SkWCVvWhTZR258Qu8EijtTcY4XrnPUcMU_IcNjwx-YnL/exec?page=admin`
+
+If you create a new Apps Script deployment later, update the destination URL in all three GitHub Pages HTML files.
