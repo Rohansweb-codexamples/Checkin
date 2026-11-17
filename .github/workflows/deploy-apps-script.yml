@@ -1,0 +1,41 @@
+name: Deploy Google Apps Script
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Code.gs'
+      - 'appsscript.json'
+      - '.github/workflows/deploy-apps-script.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Configure clasp credentials
+        env:
+          CLASPRC_JSON: ${{ secrets.CLASPRC_JSON }}
+          SCRIPT_ID: ${{ secrets.SCRIPT_ID }}
+        run: |
+          mkdir -p "$HOME/.clasprc"
+          printf '%s' "$CLASPRC_JSON" > "$HOME/.clasprc.json"
+          printf '{"scriptId":"%s","rootDir":"."}\n' "$SCRIPT_ID" > .clasp.json
+
+      - name: Push Code.gs to Apps Script
+        run: |
+          npx --yes @google/clasp push --force
+
+      - name: Update existing web app deployment
+        env:
+          DEPLOYMENT_ID: ${{ secrets.DEPLOYMENT_ID }}
+        run: |
+          npx --yes @google/clasp deploy -i "$DEPLOYMENT_ID" -d "Automatic deployment from GitHub Actions"
