@@ -26,22 +26,34 @@ Because this is a shared kiosk and admin page, restrict access to the intended o
 
 ## Automatic Apps Script deployment (one-time setup)
 
-GitHub Actions can publish changes to `Code.gs` automatically. The GitHub Pages HTML files are not uploaded to Apps Script.
+I've added a GitHub Actions workflow. Once the two GitHub secrets below are set, every change to `Code.gs` will automatically upload the code to your existing Apps Script project and update the existing web-app deployment. You will not need to paste code into Apps Script again.
 
-### Required GitHub Actions secrets
+### One-time connection
 
-In the repository, open **Settings → Secrets and variables → Actions → New repository secret** and add:
+**A. Enable the Apps Script API**
 
-- `CLASPRC_JSON`: the complete contents of the `.clasprc.json` file created by Google clasp after a one-time CI login.
-- `SCRIPT_ID`: the Apps Script project Script ID from **Apps Script → Project Settings → IDs**.
-- `DEPLOYMENT_ID`: the deployment ID from the web app URL, the part between `/s/` and `/exec`.
+Open [Apps Script user settings](https://script.google.com/home/usersettings) and switch **Google Apps Script API** on.
 
-To create the clasp credentials, use a computer with Node.js installed:
-1. Install clasp: `npm install -g @google/clasp`.
-2. Run `clasp login` and sign in to the Google account that owns the Apps Script project.
-3. Run `clasp login --status` to confirm the account, then use the clasp CI-login flow supported by your installed clasp version to create its `.clasprc.json` credentials file.
-4. Add the complete JSON file contents as the `CLASPRC_JSON` repository secret. Never commit this credentials file to GitHub.
+**B. Create the Google sign-in credential (on a computer)**
 
-After these three secrets are added, every push that changes `Code.gs` triggers a push to Apps Script and updates the existing deployment. You can also run it manually from **Actions → Deploy Google Apps Script → Run workflow**.
+1. Install Node.js if it is not already installed.
+2. Open a terminal / command prompt.
+3. Run `npm install -g @google/clasp`.
+4. Run `clasp login` and sign in with the Google account that owns the Staff Movement Apps Script project.
+5. Find the file named `.clasprc.json` in your user home folder. It contains a refresh token. Keep it private.
 
-**Important:** The manifest preserves the web app's public access setting as `ANYONE`. If your existing deployment is restricted to your organisation, keep its existing access setting instead and do not change it to public. The first automated deployment may require you to authorize clasp/API access. Do not share the credentials JSON in chat or commit it to the repository.
+**C. Add two GitHub repository secrets**
+
+Open this repository → **Settings → Secrets and variables → Actions → New repository secret**.
+
+Add these exact names:
+
+- `CLASPRC_JSON` — paste the entire contents of your private `.clasprc.json` file.
+- `SCRIPT_ID` — in Apps Script, open **Project Settings** (gear icon) and copy the **Script ID**.
+
+Do not paste the credential JSON into ChatGPT, commit it to GitHub, or share it with anyone. It grants access to your Google Apps Script account.
+
+After both secrets are saved, open the repository's **Actions** tab and run **Deploy Google Apps Script** once using **Run workflow**. Future commits to `Code.gs` deploy automatically to the existing web app URL.
+
+If the first run reports that the Apps Script API is disabled, enable it using step A and run the workflow again. If it reports an authorization error, sign in again with `clasp login` and replace the `CLASPRC_JSON` secret with the newly generated file.
+
