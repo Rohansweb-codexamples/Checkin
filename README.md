@@ -23,3 +23,25 @@ The screenshot you provided has the correct two-column header layout. Add staff 
 The system writes directly to column B of the same sheet. Blank = In; a reason = Out. The admin refreshes automatically every 20 seconds.
 
 Because this is a shared kiosk and admin page, restrict access to the intended organisation. It does not verify each person's identity and should not be the sole emergency or safeguarding register.
+
+## Automatic Apps Script deployment (one-time setup)
+
+GitHub Actions can publish changes to `Code.gs` automatically. The GitHub Pages HTML files are not uploaded to Apps Script.
+
+### Required GitHub Actions secrets
+
+In the repository, open **Settings → Secrets and variables → Actions → New repository secret** and add:
+
+- `CLASPRC_JSON`: the complete contents of the `.clasprc.json` file created by Google clasp after a one-time CI login.
+- `SCRIPT_ID`: the Apps Script project Script ID from **Apps Script → Project Settings → IDs**.
+- `DEPLOYMENT_ID`: the deployment ID from the web app URL, the part between `/s/` and `/exec`.
+
+To create the clasp credentials, use a computer with Node.js installed:
+1. Install clasp: `npm install -g @google/clasp`.
+2. Run `clasp login` and sign in to the Google account that owns the Apps Script project.
+3. Run `clasp login --status` to confirm the account, then use the clasp CI-login flow supported by your installed clasp version to create its `.clasprc.json` credentials file.
+4. Add the complete JSON file contents as the `CLASPRC_JSON` repository secret. Never commit this credentials file to GitHub.
+
+After these three secrets are added, every push that changes `Code.gs` triggers a push to Apps Script and updates the existing deployment. You can also run it manually from **Actions → Deploy Google Apps Script → Run workflow**.
+
+**Important:** The manifest preserves the web app's public access setting as `ANYONE`. If your existing deployment is restricted to your organisation, keep its existing access setting instead and do not change it to public. The first automated deployment may require you to authorize clasp/API access. Do not share the credentials JSON in chat or commit it to the repository.
