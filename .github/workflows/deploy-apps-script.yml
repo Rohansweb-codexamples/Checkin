@@ -35,6 +35,5 @@ jobs:
           npx --yes @google/clasp push --force
 
       - name: Update existing web app deployment
-        env:
         run: |
           npx --yes @google/clasp deploy -i "AKfycbx9Dvu2Z1Vq5HOl-x2RPsD5SkWCVvWhTZR258Qu8EijtTcY4XrnPUcMU_IcNjwx-YnL" -d "Automatic deployment from GitHub Actions"
