@@ -1,16 +1,25 @@
-# Rohan's Hotel Staff Kiosk
+# Rohan's Hotel Staff Movement
 
-The kiosk interface is hosted on GitHub Pages. Apps Script contains only the Google Sheets API in `Code.gs` — no Apps Script HTML files are required.
+## Exact Google Sheet layout
+Use the existing first tab named `Sheet1`:
+- A1: `MEMBER`
+- B1: `WHERE`
+- A2 downward: one staff member per row
+- B2 downward: leave blank when they are in; the kiosk writes their reason when they are out.
 
-## Setup
-1. Open the Google Sheet and choose **Extensions → Apps Script**.
-2. Replace `Code.gs` with this repository's `Code.gs`.
-3. Run `setupStaffMovement()` once and approve permissions.
-4. On the **Staff** tab, replace the example row with staff names and set Active to TRUE.
-5. Deploy as a **Web app**, execute as **Me**, and restrict access to your intended staff group.
-6. Copy the deployed `/exec` URL into the `API` constant in `index.html`.
-7. Publish with GitHub Pages.
+The screenshot you provided has the correct two-column header layout. Add staff names in column A before opening the kiosk.
 
-Staff tap their name. If signed in, they choose **Lunch**, **Break**, **Fresh air**, **Dinner**, or **Breakfast**. If already signed out, they can tap **Sign back in**. The kiosk never displays a list of who is out. All movements are recorded in the Google Sheet's **Movement Log**.
+## Apps Script
+1. Open the Staff Movement spreadsheet → Extensions → Apps Script.
+2. Replace all of `Code.gs` with this repository's `Code.gs`. No HTML files are needed in Apps Script.
+3. Run `setupStaffMovement()` once and approve access.
+4. Deploy → Manage deployments → Edit → New version → Deploy as a Web app. Execute as Me. Set access to the intended users.
+5. Keep the deployed /exec URL in the API constant in `index.html` and `kiosk.html`.
 
-After editing Apps Script, use **Deploy → Manage deployments → Edit → New version → Deploy**. A shared kiosk does not verify each staff member's identity; restrict access and do not use it as the sole emergency or safeguarding register.
+## GitHub Pages
+- Root `index.html` is the admin dashboard. It shows all staff as In or Out and their reason, with counts and a link to the kiosk.
+- `kiosk.html` is the staff kiosk. Staff tap their name, choose Lunch, Break, Fresh air, Dinner or Breakfast, and tap their name again to sign back in.
+
+The system writes directly to column B of the same sheet. Blank = In; a reason = Out. The admin refreshes automatically every 20 seconds.
+
+Because this is a shared kiosk and admin page, restrict access to the intended organisation. It does not verify each person's identity and should not be the sole emergency or safeguarding register.
