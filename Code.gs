@@ -1,14 +1,132 @@
-const C={STAFF:'Staff',LOG:'Movement Log',REASONS:['Lunch','Break','Fresh air','Dinner','Breakfast'],SH:['Staff Name','Email','Active'],LH:['Record ID','Staff Name','Email','Action','Destination','Reason','Notes','Expected Return','Time Out','Time In','Duration (minutes)','Status']};
-function onOpen(){SpreadsheetApp.getUi().createMenu("Rohan's Hotel").addItem('Set up / repair sheets','setupStaffMovement').addToUi()}
-function setupStaffMovement(){const ss=SpreadsheetApp.getActiveSpreadsheet();if(!ss)throw Error('Open this script from the Google Sheet.');const s=sheet_(ss,C.STAFF,C.SH),l=sheet_(ss,C.LOG,C.LH);if(s.getLastRow()<2)s.getRange(2,1,1,3).setValues([['Example Staff Member','',true]]);[s,l].forEach(x=>{x.setFrozenRows(1);x.getRange(1,1,1,x.getLastColumn()).setBackground('#F28C28').setFontColor('#fff').setFontWeight('bold');x.autoResizeColumns(1,x.getLastColumn())});s.getRange('C2:C').insertCheckboxes();l.getRange('H:J').setNumberFormat('dd mmm yyyy hh:mm');l.getRange('K:K').setNumberFormat('0');PropertiesService.getScriptProperties().setProperty('STAFF_MOVEMENT_SHEET_ID',ss.getId());SpreadsheetApp.getUi().alert('Setup complete. Add staff names on the Staff tab and set Active to TRUE.')}
-function doGet(e){const p=e&&e.parameter||{},cb=/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(String(p.callback||''))?p.callback:'hotelKioskCallback';let r;try{switch(String(p.action||'staff')){case'staff':r={ok:true,staff:activeStaff_()};break;case'status':r=status_(p.name);break;case'signout':r=signout_(p.name,p.reason);break;case'signin':r=signin_(p.name);break;default:throw Error('Unknown action')}}catch(x){r={ok:false,error:x.message||String(x)}}return ContentService.createTextOutput(cb+'('+JSON.stringify(r)+');').setMimeType(ContentService.MimeType.JAVASCRIPT)}
-function activeStaff_(){const s=db_().getSheetByName(C.STAFF);if(!s||s.getLastRow()<2)return[];return s.getRange(2,1,s.getLastRow()-1,3).getValues().filter(r=>r[0]&&active_(r[2])).map(r=>String(r[0]).trim()).sort((a,b)=>a.localeCompare(b))}
-function status_(name){name=clean_(name,120);if(!staff_(name))throw Error('Please choose a valid staff name.');const m=open_(name);return{ok:true,isOut:!!m}}
-function signout_(name,reason){name=clean_(name,120);reason=clean_(reason,80);if(!C.REASONS.includes(reason))throw Error('Choose a reason.');const lock=LockService.getScriptLock();lock.waitLock(10000);try{const person=staff_(name);if(!person)throw Error('Staff member not active. Refresh the kiosk.');if(open_(person.name))throw Error('You are already signed out. Please sign back in.');db_().getSheetByName(C.LOG).appendRow([Utilities.getUuid(),person.name,person.email,'Sign out','',reason,'','',new Date(),'','','Out']);return{ok:true,message:'You are signed out.'}}finally{lock.releaseLock()}}
-function signin_(name){name=clean_(name,120);const lock=LockService.getScriptLock();lock.waitLock(10000);try{const s=db_().getSheetByName(C.LOG),v=s.getDataRange().getValues();for(let i=v.length-1;i>0;i--)if(String(v[i][1]).trim().toLowerCase()===name.toLowerCase()&&String(v[i][11]).toLowerCase()==='out'){const now=new Date(),start=new Date(v[i][8]),mins=Math.max(0,Math.round((now-start)/60000));s.getRange(i+1,10,1,3).setValues([[now,mins,'In']]);return{ok:true,message:'Welcome back.'}}throw Error('You are not currently signed out.')}finally{lock.releaseLock()}}
-function open_(name){const s=db_().getSheetByName(C.LOG);if(!s||s.getLastRow()<2)return null;const v=s.getRange(2,1,s.getLastRow()-1,12).getValues();for(let i=v.length-1;i>=0;i--)if(String(v[i][1]).trim().toLowerCase()===name.toLowerCase()&&String(v[i][11]).toLowerCase()==='out')return{row:i+2};return null}
-function staff_(name){const s=db_().getSheetByName(C.STAFF);if(!name||!s||s.getLastRow()<2)return null;const v=s.getRange(2,1,s.getLastRow()-1,3).getValues(),r=v.find(x=>String(x[0]).trim().toLowerCase()===name.toLowerCase()&&active_(x[2]));return r?{name:String(r[0]).trim(),email:String(r[1]||'').trim()}:null}
-function db_(){const id=PropertiesService.getScriptProperties().getProperty('STAFF_MOVEMENT_SHEET_ID');return id?SpreadsheetApp.openById(id):SpreadsheetApp.getActiveSpreadsheet()}
-function sheet_(ss,n,h){let s=ss.getSheetByName(n);if(!s)s=ss.insertSheet(n);if(!s.getLastRow())s.getRange(1,1,1,h.length).setValues([h]);return s}
-function active_(v){return v===true||String(v).toLowerCase()==='true'||String(v).toLowerCase()==='yes'}
-function clean_(v,n){return String(v==null?'':v).trim().replace(/[<>]/g,'').slice(0,n)}
+/**
+ * Rohan's Hotel staff movement API.
+ * Sheet layout: Sheet1, column A = MEMBER, column B = WHERE.
+ * Blank WHERE means IN. A reason in WHERE means OUT.
+ * The kiosk and admin pages are hosted on GitHub Pages.
+ */
+const HOTEL = {
+  SHEET_NAME: 'Sheet1',
+  HEADERS: ['MEMBER', 'WHERE'],
+  REASONS: ['Lunch', 'Break', 'Fresh air', 'Dinner', 'Breakfast']
+};
+
+function onOpen() {
+  SpreadsheetApp.getUi().createMenu("Rohan's Hotel")
+    .addItem('Check / prepare staff sheet', 'setupStaffMovement')
+    .addToUi();
+}
+
+/** Run once from the spreadsheet-bound Apps Script project. */
+function setupStaffMovement() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  if (!ss) throw new Error('Open Apps Script from your Staff Movement spreadsheet.');
+  let sh = ss.getSheetByName(HOTEL.SHEET_NAME);
+  if (!sh) sh = ss.getSheets()[0];
+  if (sh.getLastRow() === 0) sh.getRange(1, 1, 1, 2).setValues([HOTEL.HEADERS]);
+  const headers = sh.getRange(1, 1, 1, 2).getDisplayValues()[0].map(v => String(v).trim().toUpperCase());
+  if (headers[0] !== 'MEMBER' || headers[1] !== 'WHERE') {
+    throw new Error('Row 1 must contain MEMBER in A1 and WHERE in B1. Your screenshot layout already matches this.');
+  }
+  sh.setName(HOTEL.SHEET_NAME);
+  sh.setFrozenRows(1);
+  sh.getRange('A1:B1').setFontWeight('bold');
+  PropertiesService.getScriptProperties().setProperty('HOTEL_SHEET_ID', ss.getId());
+  SpreadsheetApp.getUi().alert('Connected. Add each staff member under MEMBER in column A. Keep WHERE blank when they are in.');
+}
+
+/** JSONP endpoint for GitHub Pages. */
+function doGet(e) {
+  const p = (e && e.parameter) || {};
+  const callback = /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(String(p.callback || '')) ? String(p.callback) : 'hotelCallback';
+  let result;
+  try {
+    switch (String(p.action || 'admin')) {
+      case 'staff': result = { ok: true, staff: readStaff_().map(x => x.name) }; break;
+      case 'admin': result = { ok: true, staff: readStaff_() }; break;
+      case 'status': result = status_(p.name); break;
+      case 'signout': result = signOut_(p.name, p.reason); break;
+      case 'signin': result = signIn_(p.name); break;
+      default: throw new Error('Unknown request.');
+    }
+  } catch (err) {
+    result = { ok: false, error: err && err.message ? err.message : String(err) };
+  }
+  return ContentService.createTextOutput(callback + '(' + JSON.stringify(result) + ');')
+    .setMimeType(ContentService.MimeType.JAVASCRIPT);
+}
+
+function readStaff_() {
+  const sh = getSheet_();
+  const last = sh.getLastRow();
+  if (last < 2) return [];
+  return sh.getRange(2, 1, last - 1, 2).getDisplayValues()
+    .map((r, i) => ({ row: i + 2, name: String(r[0]).trim(), where: String(r[1]).trim() }))
+    .filter(r => r.name)
+    .map(r => ({ name: r.name, where: r.where, status: r.where ? 'Out' : 'In' }));
+}
+
+function status_(name) {
+  const row = findMemberRow_(name);
+  const where = String(getSheet_().getRange(row, 2).getDisplayValue()).trim();
+  return { ok: true, isOut: !!where, where: where };
+}
+
+function signOut_(name, reason) {
+  name = clean_(name, 120);
+  reason = clean_(reason, 80);
+  if (HOTEL.REASONS.indexOf(reason) === -1) throw new Error('Please choose one of the listed reasons.');
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    const row = findMemberRow_(name);
+    const cell = getSheet_().getRange(row, 2);
+    if (String(cell.getDisplayValue()).trim()) throw new Error('You are already signed out. Tap your name to sign back in.');
+    cell.setValue(reason);
+    return { ok: true, message: 'Signed out for ' + reason + '.' };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function signIn_(name) {
+  name = clean_(name, 120);
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    const row = findMemberRow_(name);
+    const cell = getSheet_().getRange(row, 2);
+    if (!String(cell.getDisplayValue()).trim()) throw new Error('You are already marked as in.');
+    cell.clearContent();
+    return { ok: true, message: 'You are signed back in. Welcome back!' };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function findMemberRow_(name) {
+  name = clean_(name, 120);
+  if (!name) throw new Error('Please tap your name.');
+  const sh = getSheet_();
+  const last = sh.getLastRow();
+  if (last < 2) throw new Error('No staff names have been added yet.');
+  const names = sh.getRange(2, 1, last - 1, 1).getDisplayValues();
+  for (let i = 0; i < names.length; i++) {
+    if (String(names[i][0]).trim().toLowerCase() === name.toLowerCase()) return i + 2;
+  }
+  throw new Error('That name was not found. Please refresh the kiosk.');
+}
+
+function getSheet_() {
+  const id = PropertiesService.getScriptProperties().getProperty('HOTEL_SHEET_ID');
+  const ss = id ? SpreadsheetApp.openById(id) : SpreadsheetApp.getActiveSpreadsheet();
+  if (!ss) throw new Error('Spreadsheet not connected. Run setupStaffMovement() from the Staff Movement spreadsheet.');
+  const sh = ss.getSheetByName(HOTEL.SHEET_NAME);
+  if (!sh) throw new Error('Could not find Sheet1. Check the spreadsheet tab name.');
+  const h = sh.getRange(1, 1, 1, 2).getDisplayValues()[0].map(v => String(v).trim().toUpperCase());
+  if (h[0] !== 'MEMBER' || h[1] !== 'WHERE') throw new Error('The first row must be MEMBER | WHERE.');
+  return sh;
+}
+
+function clean_(value, max) {
+  return String(value == null ? '' : value).trim().replace(/[<>]/g, '').slice(0, max);
+}
