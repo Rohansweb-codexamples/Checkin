@@ -143,7 +143,7 @@ function readInfo_() {
 }
 
 function saveInfo_(announcements,schedule) {
-  announcements = String(announcements == null ? '' : announcements).slice(0,4000);
+  announcements = String(announcements == null ? '' : announcements).slice(0,1500);
   schedule = String(schedule == null ? '' : schedule).slice(0,4000);
   const sh = infoSheet_();
   sh.getRange('B2:B3').setValues([[announcements],[schedule]]);
