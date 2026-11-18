@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0878d1"><title>Staff Hub - Windows workspace</title>
+<meta name="theme-color" content="#0878d1"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,1,0&display=swap" rel="stylesheet"><title>Staff Hub - Windows workspace</title>
 <style>
 :root{--blue:#0878d1;--ink:#172536;--muted:#64758a;--line:#dce5ef;--glass:rgba(255,255,255,.82);--shadow:0 18px 55px rgba(20,53,91,.18)}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:"Segoe UI",Arial,sans-serif;color:var(--ink)}body{min-height:100vh;overflow-x:hidden;background:#0877ca}
@@ -43,6 +43,50 @@ button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!impo
 .window-bar{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #e1e9f0;background:#f5f9fd;position:sticky;top:0}.window-bar strong{font-size:14px}.window-close{width:34px;height:32px;border:0;border-radius:7px;background:transparent;color:#53697e;font-size:20px}.window-close:hover{background:#e6edf4}.window-content{padding:25px;max-width:920px;margin:auto}.window-content h2{margin:0 0 7px;font-size:25px}.window-content p{color:#65788a;line-height:1.55}.window-card{border:1px solid #e0e8ef;border-radius:11px;padding:17px;background:#fff;margin:13px 0}.window-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.window-actions .action,.window-actions .quiet{min-width:135px}.window-reasons{display:flex;gap:9px;flex-wrap:wrap}.window-reasons button{border:1px solid #cbdbe8;border-radius:8px;background:#fff;padding:11px 15px;color:#23445f}.window-reasons button:hover{border-color:#1688e3;background:#eef7ff}
 @media(max-width:850px){.dashboard{grid-template-columns:1fr}.lock-card{max-width:560px;grid-template-columns:1fr}.lock-side{padding:29px}.lock-side.quick{border-left:0;border-top:1px solid #d9e8f5}.brandline{margin-bottom:22px}#desktop{padding:18px 16px 82px}.window{inset:3vh 3vw 72px}}
 @media(max-width:520px){.lock-screen{padding:12px}.lock-side{padding:22px 19px}.lock-card h1{font-size:27px}.desktop-head{align-items:flex-start}.top-actions{gap:5px}.top-chip{font-size:11px;padding:9px}.dash-title h1{font-size:25px}.stat-grid{gap:7px}.stat{padding:11px}.stat .value{font-size:23px}.quick-actions{grid-template-columns:1fr}.desktop-shortcut{width:76px}.taskbar{justify-content:flex-start}.taskbar-search{display:none}.taskbar-spacer{flex:1}.window-content{padding:18px}.start-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* Windows 11 inspired colourful glass finish */
+:root{--glass:rgba(255,255,255,.17);--shadow:0 24px 70px rgba(5,25,78,.22)}
+.material-symbols-rounded{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;display:inline-block;white-space:nowrap;direction:ltr;-webkit-font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-feature-settings:'liga'}
+.wallpaper{background:radial-gradient(ellipse at 78% 35%,rgba(0,225,255,.9),transparent 34%),radial-gradient(ellipse at 18% 82%,rgba(255,91,183,.8),transparent 36%),radial-gradient(ellipse at 46% 6%,rgba(255,174,58,.78),transparent 33%),linear-gradient(135deg,#152b9b 0%,#285de0 42%,#672bc5 75%,#087ab9 100%)}
+.wallpaper:before{width:75vw;height:75vw;right:-15vw;top:-20vw;border:1px solid #ffffff35;box-shadow:0 0 0 24px #ffffff0b,0 0 0 65px #ffffff0a,0 0 110px #6beaff55}
+.wallpaper:after{width:65vw;height:65vw;left:-20vw;bottom:-40vw;background:radial-gradient(circle,#ff75c355,transparent 68%)}
+.lock-screen{background:linear-gradient(135deg,#061d5444,#091f5733)}
+.lock-card{background:rgba(255,255,255,.17);border:1px solid rgba(255,255,255,.34);box-shadow:0 30px 100px #06133d55,inset 0 1px #ffffff55;backdrop-filter:blur(38px) saturate(155%);-webkit-backdrop-filter:blur(38px) saturate(155%)}
+.lock-side{color:#fff}.lock-side.quick{background:rgba(255,255,255,.07);border-left:1px solid #ffffff35}
+.brandline strong{color:#fff}.brandline small,.lock-card p,.lock-note{color:#e3f2ff}.kicker{color:#a9f1ff}.field-label{color:#e9f6ff}
+.field,.select{background:rgba(8,27,83,.28);border:1px solid #ffffff55;color:#fff;backdrop-filter:blur(12px)}
+.field::placeholder{color:#d9eaff}.select option{background:#173a82;color:#fff}
+.field:focus,.select:focus{border-color:#9ef3ff;box-shadow:0 0 0 3px #9ef3ff30}
+.action{background:linear-gradient(110deg,#72eaff,#9c8aff 55%,#ff9bd3);color:#12285c;box-shadow:0 9px 24px #071d6240}.action:hover{background:linear-gradient(110deg,#a1f4ff,#b8aaff 55%,#ffb6e1)}
+.quiet{background:#ffffff20;border-color:#ffffff4a;color:#fff}
+.reason{background:rgba(255,255,255,.13);border:1px solid #ffffff4a;color:#fff;backdrop-filter:blur(12px)}
+.reason[aria-pressed=true]{background:linear-gradient(120deg,#00d9ff66,#8968ff88,#f65bb588);border-color:#b7f8ff;color:#fff;box-shadow:inset 0 0 0 1px #b7f8ff55,0 6px 20px #061b5633}
+.reason:before{background:#c8e7ff}.reason[aria-pressed=true]:before{background:#9ff6ff}
+.message{color:#fff}.lock-note{opacity:.85}
+#desktop{background:linear-gradient(180deg,#061c3b0d,#061c3b18)}
+.desktop-head{padding:11px 14px;border:1px solid #ffffff30;border-radius:15px;background:rgba(255,255,255,.12);backdrop-filter:blur(24px);box-shadow:inset 0 1px #ffffff25}
+.dash-title{text-shadow:0 2px 10px #061b5b55}
+.panel{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.38);box-shadow:0 18px 55px #061a5430,inset 0 1px #ffffff35;backdrop-filter:blur(28px) saturate(145%);-webkit-backdrop-filter:blur(28px) saturate(145%);color:#fff}
+.panel-head h2{color:#fff}.subtle{color:#e0efff}
+.stat{background:rgba(255,255,255,.17);border:1px solid #ffffff38;color:#fff;backdrop-filter:blur(12px)}
+.stat .label,.stat .foot{color:#e0efff}
+.staff-row{background:rgba(255,255,255,.14);border:1px solid #ffffff30;color:#fff}
+.staff-name{color:#fff}.staff-state{background:#b9f4d2;color:#075d36}.staff-state.out{background:#ffe0ae;color:#764000}.staff-state.unknown{background:#e1e9f1;color:#526477}
+.quick-app{background:rgba(255,255,255,.15);border:1px solid #ffffff35;color:#fff;backdrop-filter:blur(12px)}
+.quick-app:hover{background:rgba(255,255,255,.25);border-color:#b6efff}
+.quick-app small{color:#e1efff}.app-icon{background:rgba(255,255,255,.88);color:#176fc0}
+.desktop-shortcut{backdrop-filter:blur(8px)}.desktop-shortcut .app-icon{background:rgba(255,255,255,.88);color:#176fc0;box-shadow:0 8px 20px #061b5633}
+.announcement{background:rgba(255,255,255,.15);border-left-color:#9cefff;color:#fff}
+.date-card{background:linear-gradient(135deg,rgba(6,67,151,.55),rgba(14,173,218,.38));border:1px solid #ffffff55;box-shadow:0 18px 45px #061a5430;backdrop-filter:blur(24px)}
+.top-chip{background:rgba(255,255,255,.15);border-color:#ffffff45}
+.taskbar{background:rgba(237,247,255,.68);border-top:1px solid #ffffffaa;box-shadow:0 -8px 35px #041d5133;backdrop-filter:blur(32px) saturate(170%)}
+.taskbar-btn:hover,.taskbar-btn.active{background:#ffffffa8}.windows-logo{color:#0878d1}
+.start-menu{background:rgba(245,250,255,.78);border:1px solid #ffffffc9;box-shadow:0 25px 80px #041d5155;backdrop-filter:blur(38px) saturate(170%)}
+.start-item .app-icon{background:linear-gradient(145deg,#fff,#d9efff);box-shadow:0 5px 14px #07558c18}
+.window{background:rgba(247,251,255,.82);border:1px solid #ffffffd9;box-shadow:0 28px 100px #041d5155;backdrop-filter:blur(35px) saturate(160%)}
+.window-bar{background:rgba(240,248,255,.65);backdrop-filter:blur(18px)}
+.window-card{background:rgba(255,255,255,.75)}
+@media(max-width:850px){.lock-side.quick{border-top:1px solid #ffffff35}}
 </style>
 </head>
 <body>
@@ -71,11 +115,11 @@ button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!impo
 <section id="desktop" class="hidden">
  <header class="desktop-head"><div class="desktop-brand"><div class="brandmark">SH</div><div><strong>Staff Hub</strong><small>Hotel staff workspace</small></div></div><div class="top-actions"><button class="top-chip" id="refreshBtn">↻ Refresh dashboard</button><button class="top-chip" id="lockBtn">Lock workspace</button></div></header>
  <div class="desktop-icons">
-  <button class="desktop-shortcut" data-open="attendance"><span class="app-icon">◷</span><span>My shift</span></button>
-  <button class="desktop-shortcut" data-open="announcements"><span class="app-icon">▤</span><span>Announcements</span></button>
-  <button class="desktop-shortcut" data-open="schedule"><span class="app-icon">▦</span><span>Daily schedule</span></button>
-  <button class="desktop-shortcut" data-open="directory"><span class="app-icon">♙</span><span>Staff directory</span></button>
-  <button class="desktop-shortcut" data-open="account"><span class="app-icon">⚙</span><span>My account</span></button>
+  <button class="desktop-shortcut" data-open="attendance"><span class="app-icon"><span class="material-symbols-rounded">schedule</span></span><span>My shift</span></button>
+  <button class="desktop-shortcut" data-open="announcements"><span class="app-icon"><span class="material-symbols-rounded">campaign</span></span><span>Announcements</span></button>
+  <button class="desktop-shortcut" data-open="schedule"><span class="app-icon"><span class="material-symbols-rounded">calendar_month</span></span><span>Daily schedule</span></button>
+  <button class="desktop-shortcut" data-open="directory"><span class="app-icon"><span class="material-symbols-rounded">groups</span></span><span>Staff directory</span></button>
+  <button class="desktop-shortcut" data-open="account"><span class="app-icon"><span class="material-symbols-rounded">settings</span></span><span>My account</span></button>
  </div>
  <div class="dash-title"><h1 id="greeting">Good day</h1><p>Your staff overview and hotel updates, all in one place.</p></div>
  <div class="dashboard">
@@ -91,18 +135,18 @@ button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!impo
   <aside class="right-stack">
    <div class="date-card"><div class="time" id="largeTime">--:--</div><div class="date" id="largeDate">Loading date…</div><div class="signed" id="signedAs">Signed in</div></div>
    <div class="panel"><div class="panel-head"><h2>Quick access</h2><span class="subtle">Your apps</span></div><div class="quick-actions">
-    <button class="quick-app" data-open="attendance"><span class="app-icon">◷</span><span><strong>My shift</strong><small>Check in and out</small></span></button>
-    <button class="quick-app" data-open="announcements"><span class="app-icon">▤</span><span><strong>Announcements</strong><small>Hotel news</small></span></button>
-    <button class="quick-app" data-open="schedule"><span class="app-icon">▦</span><span><strong>Daily schedule</strong><small>Shift information</small></span></button>
-    <button class="quick-app" data-open="directory"><span class="app-icon">♙</span><span><strong>Staff directory</strong><small>Staff guidance</small></span></button>
+    <button class="quick-app" data-open="attendance"><span class="app-icon"><span class="material-symbols-rounded">schedule</span></span><span><strong>My shift</strong><small>Check in and out</small></span></button>
+    <button class="quick-app" data-open="announcements"><span class="app-icon"><span class="material-symbols-rounded">campaign</span></span><span><strong>Announcements</strong><small>Hotel news</small></span></button>
+    <button class="quick-app" data-open="schedule"><span class="app-icon"><span class="material-symbols-rounded">calendar_month</span></span><span><strong>Daily schedule</strong><small>Shift information</small></span></button>
+    <button class="quick-app" data-open="directory"><span class="app-icon"><span class="material-symbols-rounded">groups</span></span><span><strong>Staff directory</strong><small>Staff guidance</small></span></button>
    </div></div>
    <div class="panel"><div class="panel-head"><h2>Daily schedule</h2><button class="quiet" data-open="schedule">View</button></div><div id="schedulePreview" class="announcement">Loading schedule…</div></div>
   </aside>
  </div>
 </section>
-<div id="taskbar" class="taskbar hidden"><button class="taskbar-btn" id="startBtn" aria-label="Start"><span class="windows-logo">▦</span></button><button class="taskbar-search" id="searchBtn">Search apps and hotel information</button><button class="taskbar-btn" data-open="attendance" title="My shift">◷</button><button class="taskbar-btn" data-open="announcements" title="Announcements">▤</button><button class="taskbar-btn" data-open="schedule" title="Daily schedule">▦</button><div class="taskbar-spacer"></div><div class="task-clock"><strong id="taskTime">--:--</strong><br><span id="taskDate">--</span></div></div>
+<div id="taskbar" class="taskbar hidden"><button class="taskbar-btn" id="startBtn" aria-label="Start"><span class="windows-logo"><span class="material-symbols-rounded">grid_view</span></span></button><button class="taskbar-search" id="searchBtn">Search apps and hotel information</button><button class="taskbar-btn" data-open="attendance" title="My shift">◷</button><button class="taskbar-btn" data-open="announcements" title="Announcements">▤</button><button class="taskbar-btn" data-open="schedule" title="Daily schedule">▦</button><div class="taskbar-spacer"></div><div class="task-clock"><strong id="taskTime">--:--</strong><br><span id="taskDate">--</span></div></div>
 <div id="startMenu" class="start-menu hidden"><div class="start-top"><strong>Staff Hub apps</strong><button class="quiet" id="startLock">Lock</button></div><input class="start-search" id="appSearch" placeholder="Search apps…" autocomplete="off"><div class="start-grid" id="startGrid">
- <button class="start-item" data-open="attendance"><span class="app-icon">◷</span><span>My shift</span></button><button class="start-item" data-open="announcements"><span class="app-icon">▤</span><span>Announcements</span></button><button class="start-item" data-open="schedule"><span class="app-icon">▦</span><span>Daily schedule</span></button><button class="start-item" data-open="directory"><span class="app-icon">♙</span><span>Staff directory</span></button><button class="start-item" data-open="account"><span class="app-icon">⚙</span><span>My account</span></button>
+ <button class="start-item" data-open="attendance"><span class="app-icon"><span class="material-symbols-rounded">schedule</span></span><span>My shift</span></button><button class="start-item" data-open="announcements"><span class="app-icon"><span class="material-symbols-rounded">campaign</span></span><span>Announcements</span></button><button class="start-item" data-open="schedule"><span class="app-icon"><span class="material-symbols-rounded">calendar_month</span></span><span>Daily schedule</span></button><button class="start-item" data-open="directory"><span class="app-icon"><span class="material-symbols-rounded">groups</span></span><span>Staff directory</span></button><button class="start-item" data-open="account"><span class="app-icon"><span class="material-symbols-rounded">settings</span></span><span>My account</span></button>
  </div></div>
 <div id="appWindow" class="window hidden"><div class="window-bar"><strong id="windowTitle">App</strong><button class="window-close" id="windowClose" aria-label="Close">×</button></div><div class="window-content" id="windowContent"></div></div>
 <script>
