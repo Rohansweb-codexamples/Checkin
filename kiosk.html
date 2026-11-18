@@ -87,6 +87,69 @@ button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!impo
 .window-bar{background:rgba(240,248,255,.65);backdrop-filter:blur(18px)}
 .window-card{background:rgba(255,255,255,.75)}
 @media(max-width:850px){.lock-side.quick{border-top:1px solid #ffffff35}}
+
+/* Requested desktop refinements */
+html,body{height:100%;overflow:hidden}
+#desktop{height:100vh;min-height:0;overflow:hidden;display:flex;flex-direction:column;padding:15px 26px 72px}
+.desktop-icons{flex:0 0 auto;margin-bottom:9px}
+.dash-title{flex:0 0 auto;margin:3px 0 12px}
+.dashboard{flex:1;min-height:0;overflow:hidden;grid-template-columns:minmax(0,1.65fr) minmax(280px,.9fr)}
+.dashboard>div,.right-stack{min-height:0;overflow:hidden}
+.dashboard .panel{min-height:0}
+.dashboard>div>.panel:first-child{max-height:100%;overflow:auto}
+.right-stack{grid-template-rows:auto 1fr auto}
+.right-stack>.panel{min-height:0}
+#desktop .staff-list{max-height:30vh;overflow:auto}
+.lock-card{max-width:610px;grid-template-columns:1fr}
+.lock-side{padding:45px}
+.lock-card h1{font-size:38px}
+.lock-side .brandline{margin-bottom:48px}
+.window{overflow:auto}
+.window-content{max-width:1080px;padding:30px}
+.app-hero{display:flex;align-items:center;gap:20px;padding:23px 26px;border-radius:18px;color:white;margin-bottom:23px;box-shadow:0 14px 35px #0a2c6b24}
+.app-hero h2{font-size:30px;margin:5px 0 4px;color:white}
+.app-hero p{color:#eff8ff;margin:0}
+.hero-icon{width:68px;height:68px;border-radius:19px;display:grid;place-items:center;background:#ffffff28;border:1px solid #ffffff60;flex:0 0 auto}
+.hero-icon .material-symbols-rounded{font-size:36px}
+.hero-kicker{font-size:10px;letter-spacing:1.8px;font-weight:800;color:#e3f8ff}
+.shift-hero{background:linear-gradient(115deg,#0878d1,#15b7d5 52%,#6c68e8)}
+.announce-hero{background:linear-gradient(115deg,#7545d5,#d94caa 55%,#ff945c)}
+.schedule-hero{background:linear-gradient(115deg,#087c85,#16b6a0 55%,#5b9be9)}
+.shift-status-card{display:flex;align-items:center;gap:20px;padding:25px;border-radius:17px;background:linear-gradient(120deg,#e6f8ff,#f0edff);border:1px solid #cfe9ff;margin-bottom:20px}
+.status-orb{width:66px;height:66px;display:grid;place-items:center;border-radius:20px;flex:0 0 auto;color:white;box-shadow:0 9px 22px #174d8a22}
+.status-orb .material-symbols-rounded{font-size:35px}
+.status-orb.present{background:linear-gradient(145deg,#12b981,#0b9eaa)}
+.status-orb.away{background:linear-gradient(145deg,#ff9b45,#ed5c91)}
+.status-eyebrow{font-size:10px;letter-spacing:1.5px;font-weight:800;color:#58718b}
+.status-copy h3{font-size:22px;color:#183550;margin:5px 0}
+.status-copy p{margin:0;color:#536b80}
+.shift-prompt{margin:23px 0 14px}.shift-prompt h3{font-size:20px;margin:0 0 5px;color:#1c3651}.shift-prompt p{margin:0;color:#64788b}
+.shift-reason-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.shift-reason{min-height:90px;display:flex;align-items:center;gap:14px;text-align:left;padding:17px;border:1px solid #dbe7f2;border-radius:14px;background:linear-gradient(135deg,#fff,#f2f8ff);color:#23445f;box-shadow:0 6px 18px #163d6410;transition:transform .16s,border-color .16s,box-shadow .16s}
+.shift-reason:hover{transform:translateY(-2px);border-color:#78b9ec;box-shadow:0 10px 25px #163d6420}
+.shift-reason>.material-symbols-rounded:first-child{width:43px;height:43px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(145deg,#d9f6ff,#e7e0ff);color:#386ac4;font-size:25px}
+.shift-reason strong{font-size:15px;flex:1}.shift-reason .reason-arrow{color:#92a9bf;font-size:20px}
+.shift-primary{width:100%;min-height:100px;display:flex;align-items:center;gap:18px;padding:20px 25px;border:0;border-radius:17px;text-align:left;color:white;box-shadow:0 13px 30px #0878d133;transition:transform .15s,filter .15s}
+.shift-primary:hover{transform:translateY(-2px);filter:brightness(1.05)}
+.signin-primary{background:linear-gradient(105deg,#087bd5,#06b8bd 50%,#4e83ee)}
+.shift-primary>.material-symbols-rounded:first-child{font-size:36px;width:58px;height:58px;display:grid;place-items:center;background:#ffffff28;border-radius:16px}
+.shift-primary strong{display:block;font-size:20px}.shift-primary small{display:block;font-size:13px;color:#e7fbff;margin-top:5px}.shift-primary .arrow{margin-left:auto;font-size:27px}
+.editor-layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(260px,.8fr);gap:18px;align-items:start}
+.editor-card,.preview-card{border:1px solid #e0e9f2;border-radius:16px;padding:21px;background:linear-gradient(145deg,#fff,#f7fbff);box-shadow:0 9px 25px #163d6410}
+.editor-label{display:block;font-weight:750;color:#243e57;margin-bottom:11px}
+.hub-textarea{width:100%;min-height:210px;resize:vertical;padding:16px;border:1px solid #d2dfeb;border-radius:12px;background:#fff;color:#1d354d;font:inherit;line-height:1.6;outline:none}
+.hub-textarea:focus{border-color:#8a75e9;box-shadow:0 0 0 4px #9278e91c}
+.editor-footer{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:15px;flex-wrap:wrap}
+.publish-btn{display:inline-flex;align-items:center;gap:9px;border:0;border-radius:11px;padding:14px 19px;color:white;font-weight:750;background:linear-gradient(105deg,#7449d8,#d34aa9 60%,#f18a62);box-shadow:0 8px 20px #9a4ba633}
+.publish-btn:hover{filter:brightness(1.07)}.publish-btn:disabled{opacity:.65}
+.preview-heading{display:flex;align-items:center;gap:9px;font-weight:750;color:#425c77;margin-bottom:15px}
+.preview-heading .material-symbols-rounded{color:#8a68d8}
+.live-preview{min-height:155px;padding:17px;border-radius:11px;background:linear-gradient(135deg,#f0eaff,#e9f8ff);color:#344e68;white-space:pre-wrap;line-height:1.65}
+.editor-message{min-height:23px;margin-top:12px;color:#16815b;font-weight:650;font-size:13px}
+.schedule-view{font-size:15px;color:#344e68;background:linear-gradient(135deg,#f0fbf9,#f0f6ff)}
+@media(max-width:850px){#desktop{padding:12px 14px 70px;overflow:auto;height:100vh}.dashboard{overflow:visible;display:block}.dashboard>div,.right-stack{overflow:visible}.right-stack{display:grid;grid-template-rows:auto}.dashboard>div>.panel:first-child{max-height:none}.lock-card{max-width:610px}.lock-side{padding:29px}.lock-side .brandline{margin-bottom:22px}.editor-layout{grid-template-columns:1fr}.shift-reason-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.window-content{padding:17px}.app-hero{padding:17px;gap:13px}.app-hero h2{font-size:24px}.hero-icon{width:54px;height:54px}.shift-status-card{padding:17px;gap:13px}.status-orb{width:53px;height:53px}.shift-reason-grid{grid-template-columns:1fr}.shift-reason{min-height:70px}.editor-footer{align-items:stretch}.publish-btn{justify-content:center;width:100%}}
+
 </style>
 </head>
 <body>
@@ -101,15 +164,7 @@ button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!impo
    <form id="staffForm" class="hidden"><label class="field-label" for="staffChoice">Your staff profile</label><select class="select" id="staffChoice" required><option value="">Choose your name</option></select><button class="action full">Open desktop</button></form>
    <div class="lock-note">Your workspace is for staff use. Lock the desktop when you finish.</div>
   </div>
-  <div class="lock-side quick">
-   <div class="brandline"><div class="brandmark" style="background:linear-gradient(145deg,#0b9c88,#0878d1)">↗</div><div><strong>Quick sign out</strong><small>No desktop sign-in required</small></div></div>
-   <div class="kicker">Going somewhere?</div><h1>Record a break</h1><p>Choose your name and whereabouts to update the staff board.</p>
-   <form id="quickForm"><label class="field-label" for="quickStaff">Staff member</label><select class="select" id="quickStaff" required><option value="">Loading staff list…</option></select>
-    <div class="field-label">Where are you going?</div><div class="reason-grid" id="reasonGrid">
-     <button type="button" class="reason" data-reason="Lunch" aria-pressed="false">Lunch</button><button type="button" class="reason" data-reason="Break" aria-pressed="false">Break</button><button type="button" class="reason" data-reason="Fresh air" aria-pressed="false">Fresh air</button><button type="button" class="reason" data-reason="Dinner" aria-pressed="false">Dinner</button><button type="button" class="reason" data-reason="Breakfast" aria-pressed="false">Breakfast</button>
-    </div><button class="action full" id="quickBtn">Record sign out</button><div id="quickMessage" class="message" aria-live="polite"></div>
-   </form>
-  </div>
+
  </div>
 </section>
 <section id="desktop" class="hidden">
@@ -167,12 +222,13 @@ $('staffForm').onsubmit=e=>{e.preventDefault();currentName=$('staffChoice').valu
 document.querySelectorAll('[data-reason]').forEach(b=>b.onclick=()=>{quickReason=b.dataset.reason;document.querySelectorAll('[data-reason]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)))});
 $('quickForm').onsubmit=async e=>{e.preventDefault();const b=$('quickBtn'),name=$('quickStaff').value;if(!name){$('quickMessage').textContent='Choose your name first.';return}if(!quickReason){$('quickMessage').textContent='Choose where you are going.';return}b.disabled=true;b.textContent='Saving…';$('quickMessage').textContent='Updating the staff register…';try{await api('signout',{name:name,reason:quickReason});$('quickMessage').style.color='#187344';$('quickMessage').textContent=name+' has been signed out for '+quickReason+'.';$('quickForm').reset();quickReason='';document.querySelectorAll('[data-reason]').forEach(x=>x.setAttribute('aria-pressed','false'));await loadStaff()}catch(err){$('quickMessage').style.color='#a33434';$('quickMessage').textContent=err.message}finally{b.disabled=false;b.textContent='Record sign out'}};
 function closeApp(){$('appWindow').classList.add('hidden')}
-function openApp(name){$('startMenu').classList.add('hidden');$('appWindow').classList.remove('hidden');const c=$('windowContent');c.innerHTML='';if(name==='announcements'||name==='schedule'){$('windowTitle').textContent=name==='announcements'?'Announcements':'Daily schedule';const value=info[name]||'Nothing has been published yet.';c.innerHTML='<h2>'+ (name==='announcements'?'Hotel announcements':"Today's schedule")+'</h2><p>Latest information from the hotel staff hub.</p><div class="window-card" style="white-space:pre-wrap;line-height:1.65">'+safeText(value)+'</div><button class="quiet" id="reloadInfo">Refresh information</button>';$('reloadInfo').onclick=async()=>{try{await loadInfo();openApp(name)}catch(e){c.textContent=e.message}}}
-else if(name==='attendance'){$('windowTitle').textContent='My shift';c.innerHTML='<h2>My shift</h2><p>Check your current status and record when you leave or return.</p><div class="window-card" id="myStatus">Checking your status…</div><div id="shiftActions"></div>';loadMyStatus()}
+function openApp(name){$('startMenu').classList.add('hidden');$('appWindow').classList.remove('hidden');const c=$('windowContent');c.innerHTML='';if(name==='announcements'){$('windowTitle').textContent='Announcements';c.innerHTML='<div class="app-hero announce-hero"><div class="hero-icon"><span class="material-symbols-rounded">campaign</span></div><div><span class="hero-kicker">STAFF COMMUNICATIONS</span><h2>Announcements</h2><p>Share important hotel updates with the whole team.</p></div></div><div class="editor-layout"><section class="editor-card"><label class="editor-label" for="announcementText">Write an announcement</label><textarea id="announcementText" class="hub-textarea" maxlength="1500" placeholder="Type your announcement here…"></textarea><div class="editor-footer"><span class="subtle">Up to 1,500 characters · Published to the desktop</span><button class="publish-btn" id="publishAnnouncement"><span class="material-symbols-rounded">send</span> Publish announcement</button></div><div id="announceMessage" class="editor-message" aria-live="polite"></div></section><section class="preview-card"><div class="preview-heading"><span class="material-symbols-rounded">visibility</span> Live preview</div><div id="announcementLivePreview" class="live-preview"></div></section></div>';$('announcementText').value=info.announcements||'';$('announcementLivePreview').textContent=info.announcements||'Your announcement will appear here as you write.';$('announcementText').oninput=e=>$('announcementLivePreview').textContent=e.target.value||'Your announcement will appear here as you write.';$('publishAnnouncement').onclick=async()=>{const b=$('publishAnnouncement');b.disabled=true;b.textContent='Publishing…';try{await api('saveinfo',{announcements:$('announcementText').value,schedule:info.schedule||''});await loadInfo();$('announceMessage').textContent='Announcement published successfully.';$('announcementPreview').textContent=info.announcements||'No announcements have been published.'}catch(e){$('announceMessage').textContent=e.message}finally{b.disabled=false;b.innerHTML='<span class="material-symbols-rounded">send</span> Publish announcement'}}}
+else if(name==='schedule'){$('windowTitle').textContent='Daily schedule';c.innerHTML='<div class="app-hero schedule-hero"><div class="hero-icon"><span class="material-symbols-rounded">calendar_month</span></div><div><span class="hero-kicker">TODAY AT THE HOTEL</span><h2>Daily schedule</h2><p>Check the latest shift and team information.</p></div></div><div class="window-card schedule-view" style="white-space:pre-wrap;line-height:1.8">'+safeText(info.schedule||'No schedule has been published yet.')+'</div><button class="quiet" id="reloadInfo">Refresh schedule</button>';$('reloadInfo').onclick=async()=>{try{await loadInfo();openApp(name)}catch(e){c.textContent=e.message}}}
+else if(name==='attendance'){$('windowTitle').textContent='My shift';c.innerHTML='<div class="app-hero shift-hero"><div class="hero-icon"><span class="material-symbols-rounded">schedule</span></div><div><span class="hero-kicker">YOUR WORKDAY</span><h2>My shift</h2><p>Keep your team status up to date with one tap.</p></div></div><div id="myStatus" class="shift-status-card">Checking your status…</div><div id="shiftActions" class="shift-action-area"></div>';loadMyStatus()}
 else if(name==='directory'){$('windowTitle').textContent='Staff directory';c.innerHTML='<h2>Staff directory</h2><p>Staff members currently listed in the register.</p><div class="window-card">'+(staffNames.length?staffNames.map(n=>'<div class="staff-row"><span class="staff-name">'+safeText(n)+'</span><span class="subtle">Staff member</span></div>').join(''):'No staff members found.')+'</div>'}
 else if(name==='account'){$('windowTitle').textContent='My account';c.innerHTML='<h2>My account</h2><p>Your active staff workspace.</p><div class="window-card"><strong>'+safeText(currentName)+'</strong><p style="margin-bottom:0">Signed in to the Staff Hub.</p></div><button class="action" id="accountLock">Lock workspace</button>';$('accountLock').onclick=lockWorkspace}
 }
-async function loadMyStatus(){try{const d=await api('status',{name:currentName});$('myStatus').textContent=d.isOut?'You are currently signed out · '+(d.where||'Away'):'You are currently signed in.';const a=$('shiftActions');if(d.isOut){a.innerHTML='<button class="action" id="signInNow">Sign back in</button>';$('signInNow').onclick=async()=>{try{await api('signin',{name:currentName});loadMyStatus();refreshBoard()}catch(e){$('myStatus').textContent=e.message}}}else{a.innerHTML='<div class="field-label">Choose your whereabouts</div><div class="window-reasons">'+['Lunch','Break','Fresh air','Dinner','Breakfast'].map(x=>'<button data-shift-reason="'+x+'">'+x+'</button>').join('')+'</div>' ;a.querySelectorAll('[data-shift-reason]').forEach(b=>b.onclick=async()=>{try{await api('signout',{name:currentName,reason:b.dataset.shiftReason});loadMyStatus();refreshBoard()}catch(e){$('myStatus').textContent=e.message}})}}catch(e){$('myStatus').textContent=e.message}}
+async function loadMyStatus(){try{const d=await api('status',{name:currentName});const status=$('myStatus'),a=$('shiftActions');if(d.isOut){status.innerHTML='<div class="status-orb away"><span class="material-symbols-rounded">directions_walk</span></div><div class="status-copy"><span class="status-eyebrow">YOUR CURRENT STATUS</span><h3>You are signed out</h3><p>You are marked as away for <strong>'+safeText(d.where||'a break')+'</strong>.</p></div>';a.innerHTML='<button class="shift-primary signin-primary" id="signInNow"><span class="material-symbols-rounded">login</span><span><strong>Sign back in</strong><small>I'm back at work</small></span><span class="material-symbols-rounded arrow">arrow_forward</span></button>';$('signInNow').onclick=async()=>{const b=$('signInNow');b.disabled=true;try{await api('signin',{name:currentName});await loadMyStatus();refreshBoard()}catch(e){status.textContent=e.message;b.disabled=false}}}else{status.innerHTML='<div class="status-orb present"><span class="material-symbols-rounded">check_circle</span></div><div class="status-copy"><span class="status-eyebrow">YOUR CURRENT STATUS</span><h3>You are signed in</h3><p>You are currently marked as at work. Need to step away?</p></div>';a.innerHTML='<div class="shift-prompt"><h3>Heading out?</h3><p>Choose where you are going. Your status will update on the staff board.</p></div><div class="shift-reason-grid">'+['Lunch','Break','Fresh air','Dinner','Breakfast'].map((x,i)=>'<button class="shift-reason" data-shift-reason="'+x+'"><span class="material-symbols-rounded">'+(['restaurant','coffee','air','dinner_dining','free_breakfast'][i])+'</span><strong>'+x+'</strong><span class="material-symbols-rounded reason-arrow">arrow_forward</span></button>').join('')+'</div><div id="shiftFeedback" class="editor-message" aria-live="polite"></div>';a.querySelectorAll('[data-shift-reason]').forEach(b=>b.onclick=async()=>{b.disabled=true;b.classList.add('selected');$('shiftFeedback').textContent='Updating your status…';try{await api('signout',{name:currentName,reason:b.dataset.shiftReason});await loadMyStatus();refreshBoard()}catch(e){$('shiftFeedback').textContent=e.message;b.disabled=false;b.classList.remove('selected')}})}}catch(e){$('myStatus').textContent=e.message}}
 document.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>openApp(b.dataset.open)));
 $('windowClose').onclick=closeApp;$('startBtn').onclick=()=>$('startMenu').classList.toggle('hidden');$('searchBtn').onclick=()=>$('startMenu').classList.remove('hidden');$('startLock').onclick=lockWorkspace;$('lockBtn').onclick=lockWorkspace;$('refreshBtn').onclick=refreshDashboard;$('boardRefresh').onclick=refreshBoard;$('appSearch').oninput=e=>{const q=e.target.value.toLowerCase();document.querySelectorAll('.start-item').forEach(b=>b.classList.toggle('hidden',!b.textContent.toLowerCase().includes(q)))};document.addEventListener('click',e=>{if(!$('startMenu').contains(e.target)&&!$('startBtn').contains(e.target)&&!$('searchBtn').contains(e.target))$('startMenu').classList.add('hidden')});
 </script>
