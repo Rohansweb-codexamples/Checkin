@@ -32,6 +32,8 @@ function doGet(e) {
     else if (action === 'signout') result = signOut_(p.name,p.reason);
     else if (action === 'signin') result = signIn_(p.name);
     else if (action === 'addstaff') result = addStaff_(p.name);
+    else if (action === 'info') result = {ok:true,info:readInfo_()};
+    else if (action === 'saveinfo') result = saveInfo_(p.announcements,p.schedule);
     else if (action === 'ping') result = {ok:true,message:'Apps Script connection is working.'};
     else throw new Error('Unknown request: ' + action);
   } catch (err) {
@@ -119,4 +121,32 @@ function getSheet_() {
 
 function clean_(value,max) {
   return String(value == null ? '' : value).trim().replace(/[<>]/g,'').slice(0,max);
+}
+
+function infoSheet_() {
+  const ss = SpreadsheetApp.openById(PropertiesService.getScriptProperties().getProperty('HOTEL_SHEET_ID'));
+  let sh = ss.getSheetByName('KioskInfo');
+  if (!sh) {
+    sh = ss.insertSheet('KioskInfo');
+    sh.getRange('A1:B3').setValues([['SETTING','CONTENT'],['ANNOUNCEMENTS',''],['DAILY SCHEDULE','']]);
+    sh.setFrozenRows(1);
+  }
+  return sh;
+}
+
+function readInfo_() {
+  const sh = infoSheet_();
+  return {
+    announcements: String(sh.getRange('B2').getDisplayValue()),
+    schedule: String(sh.getRange('B3').getDisplayValue())
+  };
+}
+
+function saveInfo_(announcements,schedule) {
+  announcements = String(announcements == null ? '' : announcements).slice(0,4000);
+  schedule = String(schedule == null ? '' : schedule).slice(0,4000);
+  const sh = infoSheet_();
+  sh.getRange('B2:B3').setValues([[announcements],[schedule]]);
+  SpreadsheetApp.flush();
+  return {ok:true,message:'Kiosk information saved.'};
 }
