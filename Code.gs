@@ -60,7 +60,8 @@ function readStaff_() {
 
 function addStaff_(name,pin) {
   name = clean_(name,120);
-  if (!name) throw new Error('Enter a staff member name.');\n  validatePin_(pin);
+  if (!name) throw new Error('Enter a staff member name.');
+  validatePin_(pin);
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
@@ -75,7 +76,19 @@ function addStaff_(name,pin) {
   } finally { lock.releaseLock(); }
 }
 
-function pinLogin_(pin) {\n  validatePin_(pin); const hash=hashPin_(pin), sh=getSheet_(), last=sh.getLastRow();\n  if(last<2) throw new Error('No staff accounts exist.');\n  const rows=sh.getRange(2,1,last-1,3).getDisplayValues();\n  const matches=rows.filter(r=>r[0] && r[2]===hash);\n  if(matches.length!==1) throw new Error('PIN not recognised. Ask an administrator to set your PIN.');\n  return {ok:true,name:matches[0][0]};\n}\nfunction setPin_(name,pin) { validatePin_(pin); const row=findMemberRow_(name); getSheet_().getRange(row,3).setValue(hashPin_(pin)); return {ok:true,message:'PIN updated for '+name+'.'}; }\nfunction validatePin_(pin) { if(!/^\\d{4,8}$/.test(String(pin||''))) throw new Error('PIN must be 4 to 8 digits.'); }\nfunction hashPin_(pin) { return Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256,String(pin),Utilities.Charset.UTF_8).map(b=>(b+256).toString(16).slice(-2)).join(''); }\n\nfunction status_(name) {
+function pinLogin_(pin) {
+  validatePin_(pin); const hash=hashPin_(pin), sh=getSheet_(), last=sh.getLastRow();
+  if(last<2) throw new Error('No staff accounts exist.');
+  const rows=sh.getRange(2,1,last-1,3).getDisplayValues();
+  const matches=rows.filter(r=>r[0] && r[2]===hash);
+  if(matches.length!==1) throw new Error('PIN not recognised. Ask an administrator to set your PIN.');
+  return {ok:true,name:matches[0][0]};
+}
+function setPin_(name,pin) { validatePin_(pin); const row=findMemberRow_(name); getSheet_().getRange(row,3).setValue(hashPin_(pin)); return {ok:true,message:'PIN updated for '+name+'.'}; }
+function validatePin_(pin) { if(!/^\\d{4,8}$/.test(String(pin||''))) throw new Error('PIN must be 4 to 8 digits.'); }
+function hashPin_(pin) { return Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256,String(pin),Utilities.Charset.UTF_8).map(b=>(b+256).toString(16).slice(-2)).join(''); }
+
+function status_(name) {
   const row = findMemberRow_(name);
   const where = String(getSheet_().getRange(row,2).getDisplayValue()).trim();
   return {ok:true,isOut:!!where,where:where};
@@ -129,7 +142,17 @@ function clean_(value,max) {
   return String(value == null ? '' : value).trim().replace(/[<>]/g,'').slice(0,max);
 }
 
-function formatInfoSheet_(ss) {\n  let sh=ss.getSheetByName('KioskInfo'); if(!sh) sh=ss.insertSheet('KioskInfo');\n  sh.getRange('A1:B3').setValues([['SETTING','CONTENT'],['ANNOUNCEMENTS',''],['DAILY SCHEDULE','']]);\n  sh.getRange('A1:B1').setBackground('#243b8a').setFontColor('#ffffff').setFontWeight('bold');\n  sh.setColumnWidth(1,210); sh.setColumnWidth(2,620); sh.setRowHeights(2,2,90); sh.getRange('B2:B3').setWrap(true); sh.setFrozenRows(1); return sh;\n}\n\nfunction infoSheet_() {
+function formatInfoSheet_(ss) {
+  let sh=ss.getSheetByName('KioskInfo');
+  if(!sh) {
+    sh=ss.insertSheet('KioskInfo');
+    sh.getRange('A1:B3').setValues([['SETTING','CONTENT'],['ANNOUNCEMENTS',''],['DAILY SCHEDULE','']]);
+  }
+  sh.getRange('A1:B1').setBackground('#243b8a').setFontColor('#ffffff').setFontWeight('bold');
+  sh.setColumnWidth(1,210); sh.setColumnWidth(2,620); sh.setRowHeights(2,2,90); sh.getRange('B2:B3').setWrap(true); sh.setFrozenRows(1); return sh;
+}
+
+function infoSheet_() {
   const ss = SpreadsheetApp.openById(PropertiesService.getScriptProperties().getProperty('HOTEL_SHEET_ID'));
   let sh = ss.getSheetByName('KioskInfo');
   if (!sh) {
