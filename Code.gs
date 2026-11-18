@@ -85,7 +85,7 @@ function pinLogin_(pin) {
   return {ok:true,name:matches[0][0]};
 }
 function setPin_(name,pin) { validatePin_(pin); const row=findMemberRow_(name); getSheet_().getRange(row,3).setValue(hashPin_(pin)); return {ok:true,message:'PIN updated for '+name+'.'}; }
-function validatePin_(pin) { if(!/^\\d{4,8}$/.test(String(pin||''))) throw new Error('PIN must be 4 to 8 digits.'); }
+function validatePin_(pin) { if(!/^\d{4,8}$/.test(String(pin||''))) throw new Error('PIN must be 4 to 8 digits.'); }
 function hashPin_(pin) { return Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256,String(pin),Utilities.Charset.UTF_8).map(b=>(b+256).toString(16).slice(-2)).join(''); }
 
 function status_(name) {
