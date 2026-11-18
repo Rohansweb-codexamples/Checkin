@@ -52,14 +52,16 @@ body{background:radial-gradient(ellipse at 12% 8%,#ff9c35 0,transparent 28%),rad
 </div><button class="primary" id="quickOutBtn" type="submit">RECORD SIGN OUT</button><div id="quickOutMessage" class="quick-status" aria-live="polite"></div></form>
 </div></section>
 <section id="desktop" class="hidden"><div class="desktop-top"><div class="section-tag">STAFF DESKTOP</div><button class="soft" onclick="lockOS()">↪ SIGN OUT OF WORKSPACE</button></div><div class="glass welcome"><h2 id="hello">Welcome</h2><p>Your hotel workspace is ready. Choose an app below.</p></div>
-<div class="app-group"><h3>My shift</h3><div id="home" class="grid">
+<div id="home" class="home-layout">
+<div class="app-group"><h3>My shift</h3><div class="grid">
 <button class="tile" data-app="attendance"><span class="ico">◷</span><strong>Staff check-in</strong><small>Sign out for a break or sign back in</small></button>
-</div></div><div class="app-group"><h3>Hotel information</h3><div class="grid">
+</div></div>
+<div class="app-group"><h3>Hotel information</h3><div class="grid">
 <button class="tile" data-app="announcements"><span class="ico">▤</span><strong>Announcements</strong><small>Hotel news and important updates</small></button>
 <button class="tile" data-app="schedule"><span class="ico">▦</span><strong>Daily schedule</strong><small>Today's timings and activities</small></button>
 <button class="tile" data-app="directory"><span class="ico">♙</span><strong>Staff information</strong><small>Helpful staff guidance</small></button>
 <button class="tile" data-app="account"><span class="ico">⚙</span><strong>My account</strong><small>Signed-in account and lock screen</small></button>
-</div></div>
+</div></div></div>
 <section id="app" class="glass app hidden"><div class="apphead"><h2 id="appTitle">App</h2><button class="soft" id="homeBtn">← Home</button></div><div id="appBody" class="copy"></div></section><div id="actionMessage" class="glass success hidden"></div>
 </section><div class="footer">ROHAN'S HOTEL OS · STAFF PORTAL</div></div>
 <script>
